@@ -1,51 +1,50 @@
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Particles.js configuration
+    // Detect if device is mobile
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
     particlesJS('particles-js', {
         particles: {
             number: {
-                value: 300,
+                value: isMobile ? 30 : 80,
                 density: {
                     enable: true,
-                    value_area: 800
+                    value_area: 1000
                 }
             },
             color: {
-                value: ["#ffffff", "#a5f3fc"]
+                value: ["#ffffff", "#e0f2fe", "#bae6fd"]
             },
             shape: {
-                type: "circle"
+                type: "circle",
+                stroke: {
+                    width: 0
+                }
             },
             opacity: {
-                value: 0.8,
-                random: true,
+                value: 0.9,
+                random: false,
                 anim: {
-                    enable: true,
-                    speed: 0.5,
-                    opacity_min: 0.1,
-                    sync: false
+                    enable: false
                 }
             },
             size: {
-                value: 2,
+                value: isMobile ? 3 : 4,
                 random: true,
                 anim: {
-                    enable: true,
-                    speed: 1,
-                    size_min: 0.1,
-                    sync: false
+                    enable: false
                 }
             },
             line_linked: {
                 enable: true,
-                distance: 120,
-                color: "#a5f3fc",
-                opacity: 0.2,
-                width: 1
+                distance: isMobile ? 150 : 200,
+                color: "#e0f2fe",
+                opacity: 0.4,
+                width: isMobile ? 1 : 2
             },
             move: {
                 enable: true,
-                speed: 2,
+                speed: 1.5,
                 direction: "none",
                 random: true,
                 straight: false,
@@ -53,8 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 bounce: true,
                 attract: {
                     enable: true,
-                    rotateX: 3000,
-                    rotateY: 3000
+                    rotateX: 1500,
+                    rotateY: 1500
                 }
             }
         },
@@ -62,22 +61,24 @@ document.addEventListener('DOMContentLoaded', function() {
             detect_on: "canvas",
             events: {
                 onhover: {
-                    enable: true,
-                    mode: "repulse"
+                    enable: !isMobile,
+                    mode: "grab"
                 },
                 onclick: {
-                    enable: true,
+                    enable: !isMobile,
                     mode: "push"
                 },
                 resize: true
             },
             modes: {
-                repulse: {
-                    distance: 150,
-                    duration: 0.4
+                grab: {
+                    distance: 200,
+                    line_linked: {
+                        opacity: 0.8
+                    }
                 },
                 push: {
-                    particles_nb: 10
+                    particles_nb: 3
                 }
             }
         },
@@ -85,52 +86,5 @@ document.addEventListener('DOMContentLoaded', function() {
         fps_limit: 60
     });
 
-    // Create a spherical distribution of particles
-    const canvas = document.querySelector('#particles-js canvas');
-    const ctx = canvas.getContext('2d');
-    const particles = [];
-    
-    function createSpherePoints() {
-        const numPoints = 200;
-        const radius = Math.min(canvas.width, canvas.height) * 0.3;
-        
-        for (let i = 0; i < numPoints; i++) {
-            const theta = Math.random() * 2 * Math.PI;
-            const phi = Math.acos(2 * Math.random() - 1);
-            
-            const x = radius * Math.sin(phi) * Math.cos(theta) + canvas.width / 2;
-            const y = radius * Math.sin(phi) * Math.sin(theta) + canvas.height / 2;
-            const z = radius * Math.cos(phi);
-            
-            particles.push({ x, y, z });
-        }
-    }
-
-    // Initial setup
-    function init() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        createSpherePoints();
-    }
-
-    // Animation
-    let angle = 0;
-    function animate() {
-        angle += 0.002;
-        
-        particles.forEach(particle => {
-            particle.x = particle.x * Math.cos(angle) - particle.z * Math.sin(angle);
-            particle.z = particle.x * Math.sin(angle) + particle.z * Math.cos(angle);
-        });
-        
-        requestAnimationFrame(animate);
-    }
-
-    init();
-    animate();
-
-    // Handle window resize
-    window.addEventListener('resize', init);
-
-    console.log('Website loaded successfully with 3D sphere particle effects!');
+    console.log(`Website loaded successfully with high-resolution particle effects!`);
 }); 
